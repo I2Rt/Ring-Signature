@@ -2,7 +2,7 @@ from model_BKZ import *
 from MSIS_security import *
 from MLWE_security import *
 import math
-from Tools import *
+from tools import *
 
 N = 2**20  # ring size
 
@@ -38,10 +38,8 @@ class ParameterSet(object):
 
             self.s = self.alpha * self.tau * self.eta * math.sqrt(self.k * self.d)  # standard deviation s
             self.B = self.s * math.sqrt(2 * self.m * self.d)  # ||z|| < B
-            # self.norm = self.B / self.tau + 2 * self.tau  # norm of the vector [s | bc]
-            self.norm = 2 * self.B + 2 * self.tau
+            self.norm = 2 * self.B + 2 * self.tau # norm of the vector [z -z* | bc]
 
-            # self.Bs1 = math.sqrt(self.nu + 2)  # norm of the vector s_1
             self.Bs1 = math.sqrt(self.k * self.d + self.nu + 4)  # norm of the vector s_1
             self.s1 = alpha1 * tau * self.Bs1  # standard deviation s_1
             self.s2 = alpha2 * tau * eta2 * math.sqrt(m2 * d)  # standard deviation s_2
@@ -112,15 +110,6 @@ def MSIS_1(dps):
     print("svp_classical: ", svp_classical(x[0]))
     print("svp_quantum: ", svp_quantum(x[0]))
 
-# MSIS Problem:
-# def MSIS_1(dps):
-#     norm_r = 2 * math.sqrt(dps.eta2 * dps.eta2 * dps.m2 * dps.d) + dps.m * dps.d
-#     ps = MSISParameterSet(dps.d, dps.m2 + dps.m, dps.m, norm_r, dps.q, "l2")
-#     x = MSIS_summarize_attacks(ps)
-#     print("delta: ", delta_BKZ(x[0]))  # hermit factor
-#     print("svp_classical: ", svp_classical(x[0]))
-#     print("svp_quantum: ", svp_quantum(x[0]))
-
 
 # MSIS Problem: [A1 | A2] [cz1-c'z1 | cz2-c'z2]^T = 0
 def MSIS_2(dps):
@@ -148,7 +137,6 @@ def MLWE_2(dps):
     print("delta: ", delta_BKZ(x[0]))  # hermit factor
     print("svp_classical: ", svp_classical(x[0]))
     print("svp_quantum: ", svp_quantum(x[0]))
-
 
 
 # MLWE Problem: com = Br + w or com = u + w
@@ -181,9 +169,9 @@ def security_test(dps):
     print("[MSIS problem in NIZK proof]")
     MSIS_2(dps)
 
-    # print("")
-    # print("[MLWE problem in NIZK proof]")
-    # MLWE_2(dps)
+    print("")
+    print("[MLWE problem in NIZK proof]")
+    MLWE_2(dps)
 
 
 
@@ -191,15 +179,10 @@ if __name__ == '__main__':
     """
       using bimodal Gaussian
     """
-    # dps_96_bimodal = ParameterSet(d=128, d2=4, q=2 ** 34, kappa=10, eta=4, eta2=1, xi=2, tau=59, m=3, k=11, n=7, m2=15,
-    #                               alpha=1, alpha1=1.2, alpha2=1.2, mode="bimodal")  # parameters for 96 bits security
-
-    # dps_96_bimodal = ParameterSet(d=64, d2=4, q=2 ** 30, kappa=10, eta=2, eta2=1, xi=8, tau=140, m=8, k=24, n=17, m2=18,
-    #                               alpha=1, alpha1=1.2, alpha2=1.2, mode="bimodal")  # parameters for 96 bits security
     dps_96_bimodal = ParameterSet(d=64, d2=4, q=2 ** 29, kappa=10, eta=1, eta2=1, xi=8, tau=140, m=7, k=23, n=17, m2=16,
                                   alpha=1, alpha1=1.2, alpha2=1.2, mode="bimodal")  # parameters for 96 bits security
 
-    # security_test(dps_96_bimodal)  # security test
+    security_test(dps_96_bimodal)  # security test
     cal_size(dps_96_bimodal)  # calculate size of signature
 
     print("")
@@ -207,14 +190,11 @@ if __name__ == '__main__':
     """
       using convolved Gaussian
     """
-    # dps_96_convolved = ParameterSet(d=128, d2=4, q=2 ** 28, kappa=10, eta=4, eta2=1, xi=2, tau=59, m=4, k=12, n=6, m2=8,
-    #                                 mode="convolved")  # parameters for 96 bits security
-
     dps_96_convolved = ParameterSet(d=64, d2=4, q=2 ** 26, kappa=10, eta=1, eta2=1, xi=8, tau=140, m=6, k=22, n=14, m2=14,
                                   mode="convolved")  # parameters for 96 bits security
 
-    # security_test(dps_96_convolved)  # security test
-    # cal_size(dps_96_convolved)  # calculate size of signature
+    security_test(dps_96_convolved)  # security test
+    cal_size(dps_96_convolved)  # calculate size of signature
 
 
 
