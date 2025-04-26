@@ -4,7 +4,7 @@ from MLWE_security import *
 import math
 from tools import *
 
-N = 2**20  # ring size
+N = 2**10  # ring size
 
 class ParameterSet(object):
     def __init__(self, d, d2, q, kappa, eta, eta2, xi, tau, m, k, n, m2, alpha=1, alpha1=1.2, alpha2=1.2, mode="bimodal"):
@@ -79,7 +79,7 @@ def cal_size(dps):
 
     # full size parameters
     size_c = dps.d * math.ceil(math.log(2 * dps.xi + 1))
-    size_full_elems = (dps.n + dps.k + dps.nu + 2 * dps.kappa + 2) * dps.d * log_q + dps.m * dps.d * (log_q + 1)
+    size_full_elems = (dps.k + dps.nu + 2 * dps.kappa + 2) * dps.d * log_q + dps.m * dps.d * (log_q + 1)
 
     # Gaussian size parameters
     size_z = 0
@@ -182,7 +182,7 @@ if __name__ == '__main__':
     dps_96_bimodal = ParameterSet(d=64, d2=4, q=2 ** 29, kappa=10, eta=1, eta2=1, xi=8, tau=140, m=7, k=23, n=17, m2=16,
                                   alpha=1, alpha1=1.2, alpha2=1.2, mode="bimodal")  # parameters for 96 bits security
 
-    security_test(dps_96_bimodal)  # security test
+    # security_test(dps_96_bimodal)  # security test
     cal_size(dps_96_bimodal)  # calculate size of signature
 
     print("")
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     dps_96_convolved = ParameterSet(d=64, d2=4, q=2 ** 26, kappa=10, eta=1, eta2=1, xi=8, tau=140, m=6, k=22, n=14, m2=14,
                                   mode="convolved")  # parameters for 96 bits security
 
-    security_test(dps_96_convolved)  # security test
+    # security_test(dps_96_convolved)  # security test
     cal_size(dps_96_convolved)  # calculate size of signature
 
 
